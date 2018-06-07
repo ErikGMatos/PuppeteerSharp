@@ -11,7 +11,7 @@ namespace PuppeteerSharpPdfDemo
 {
     class MainClass
     {
-       
+
 
         static void Main(string[] args)
         {
@@ -19,9 +19,14 @@ namespace PuppeteerSharpPdfDemo
         }
         public static async Task Matestein(string[] args)
         {
+
+
+
+
             var options = new LaunchOptions
             {
-                Headless = true
+                Headless = false
+
             };
 
             Console.WriteLine("Downloading chromium");
@@ -33,9 +38,11 @@ namespace PuppeteerSharpPdfDemo
             {
                 try
                 {
-
+                   
+                    Directory.SetCurrentDirectory(@"C:\Sistemas");
+                    page.DefaultNavigationTimeout=80000;
                     await page.GoToAsync("http://sistemasenem.inep.gov.br/EnemSolicitacao/login.seam");
-                    await page.SetViewportAsync(new ViewPortOptions{ Width = 1920, Height = 920});
+                    await page.SetViewportAsync(new ViewPortOptions { Width = 1920, Height = 920 });
                     //await page.Frames.FirstOrDefault().SelectAsync("#username", "111111");
                     await page.TypeAsync("#username", "191010104484");
                     await page.TypeAsync("#password", "UniSL2016");
@@ -55,12 +62,22 @@ namespace PuppeteerSharpPdfDemo
                     await page.WaitForSelectorAsync("#listaSolicitacaoAtendidas");
                     Thread.Sleep(2000);
                     await page.QuerySelectorAsync("#listaSolicitacaoAtendidas tbody tr td:nth-last-child(1) a");
-                    await page.ClickAsync("#listaSolicitacaoAtendidas tbody tr td:nth-last-child(1) a");
-
+                    var href = await page.EvaluateExpressionAsync("document.querySelector('#listaSolicitacaoAtendidas tbody tr td:nth-last-child(1) a').href");
+                    //await page.ClickAsync("#listaSolicitacaoAtendidas tbody tr td:nth-last-child(1) a");
+                    //await page.GoToAsync(href);
                     
+
+                    using (WebClient webClient = new WebClient())
+                    {
+                        webClient.DownloadFile(page.GoToAsync(href), @"c:\Sistemas\myfile.txt");
+                    }
+
+
+
+
                     //await page.ClickAsync("#resultadoForm input[type='image']");
                     Console.WriteLine("Terminou!");
-
+                    await browser.CloseAsync();
                     Console.ReadKey();
                 }
                 catch (Exception ex)
@@ -68,7 +85,7 @@ namespace PuppeteerSharpPdfDemo
                     Console.Write("O erro foi: " + ex);
                     Console.ReadKey();
                 }
-                
+
             }
 
         }

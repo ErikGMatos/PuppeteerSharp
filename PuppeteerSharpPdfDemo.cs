@@ -44,8 +44,8 @@ namespace PuppeteerSharpPdfDemo
                     await page.GoToAsync("http://sistemasenem.inep.gov.br/EnemSolicitacao/login.seam");
                     await page.SetViewportAsync(new ViewPortOptions { Width = 1920, Height = 920 });
                     //await page.Frames.FirstOrDefault().SelectAsync("#username", "111111");
-                    await page.TypeAsync("#username", "191010104484");
-                    await page.TypeAsync("#password", "UniSL2016");
+                    await page.TypeAsync("#username", "191010104484-98414745");
+                    await page.TypeAsync("#password", "UniSL201655944458445547");
                     await page.ClickAsync("input[type='image']");
 
                     var menu = await page.WaitForSelectorAsync("#LeftMenu #menugroup_4_3 #row_menugroup_4_3");
